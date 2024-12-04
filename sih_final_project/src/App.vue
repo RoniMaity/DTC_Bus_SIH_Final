@@ -11,7 +11,7 @@
 <!-- <login/> -->
 <!-- <help/> -->
 <!-- <Schedular></Schedular> -->
-<feedback/>
+<feedback></feedback>
 </template>
 
 <script>
@@ -45,10 +45,10 @@ export default {
   // AboutUs,
   // delhi_transport_corporation_web_banner_1,
   // Schedular,
-        // trial,
-        // login,
-        // help,
-        feedback
+  // trial,
+  // login,
+  // help,
+  feedback
   }
 
 }
