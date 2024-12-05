@@ -11,10 +11,14 @@
 <!-- <login/> -->
 <!-- <help/> -->
 <!-- <Schedular></Schedular> -->
-<feedback></feedback>
+<!-- <feedback></feedback> -->
+<Ticket_with_map/>
+
 </template>
 
 <script>
+import Ticket_with_map from './components/Ticket_with_map.vue';
+
 // import hello from './components/Ticket_map.vue'
 // import Navbar from './components/Navbar.vue'
 // import WeatherWidget from './components/WeatherWidget.vue'
@@ -33,7 +37,7 @@
 // Define Vue feature flags globally
 global._VUE_PROD_HYDRATION_MISMATCH_DETAILS_ = false;
 // import help from './components/help.vue'
-import feedback from './components/feedback.vue'
+// import feedback from './components/feedback.vue'
 // import trial from './components/trial.vue'
 // eslint-disable-next-line
 // import login from './components/login.vue'
@@ -48,7 +52,10 @@ export default {
   // trial,
   // login,
   // help,
-  feedback
+  // feedback,
+  Ticket_with_map,
+
+
   }
 
 }
