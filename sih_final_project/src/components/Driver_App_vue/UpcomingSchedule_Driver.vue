@@ -2,7 +2,7 @@
   <div class="schedule-container">
     <div class="header">
       <h2 class="title">
-        <CalendarIcon class="title-icon" @click="toggleCalendar" />
+        <q-icon name="event" class="title-icon" @click="toggleCalendar" />
         This Week's Schedule
       </h2>
     </div>
@@ -11,18 +11,23 @@
       <div class="calendar-container">
         <div class="calendar-header">
           <span class="calendar-month">{{ currentMonth }}</span>
-          <button @click="toggleCalendar" class="calendar-icon-btn">
-            <CalendarIcon class="calendar-icon" />
-          </button>
+          <q-btn flat round @click="toggleCalendar" class="calendar-icon-btn">
+            <q-icon name="event" class="calendar-icon" />
+          </q-btn>
         </div>
         <div class="calendar-days">
           <div v-for="(day, index) in weekDays" :key="index" class="calendar-day">
             <div class="day-name" v-if="!isMobile">{{ day.name }}</div>
             <div class="day-name" v-else>{{ day.nameAbbr }}</div>
 
-            <div class="day-date" @click="showDaySchedule(day.date)">
+            <q-btn
+              flat
+              class="day-date"
+              @click="showDaySchedule(day.date)"
+            >
               {{ day.date }}
-            </div>
+            </q-btn>
+
             <div v-if="isShiftScheduled(day.date) && selectedDate === day.date" class="shift-details">
               <p v-for="(shift, shiftIndex) in selectedShifts" :key="shiftIndex">{{ shift }}</p>
             </div>
@@ -44,19 +49,26 @@
     </div>
   </div>
 
-  <div v-if="isCalendarVisible" class="calendar-modal-overlay" @click="toggleCalendar">
-    <div class="calendar-modal" @click.stop>
-      <div class="calendar-month-modal">{{ currentMonth }}</div>
-      <div class="calendar-modal-days">
-        <div class="calendar-modal-day" v-for="(day, index) in fullMonthDays" :key="index">
-          <div class="calendar-modal-day-name">{{ day.name }}</div>
-          <div class="calendar-modal-day-date" :class="{ 'current-day': isCurrentDay(day.date) }" @click="showDaySchedule(day.date)">
-            {{ day.date }}
+  <q-dialog v-model="isCalendarVisible">
+    <q-card>
+      <q-card-section>
+        <div class="calendar-month-modal">{{ currentMonth }}</div>
+        <div class="calendar-modal-days">
+          <div class="calendar-modal-day" v-for="(day, index) in fullMonthDays" :key="index">
+            <div class="calendar-modal-day-name">{{ day.name }}</div>
+            <q-btn
+              flat
+              class="calendar-modal-day-date"
+              :class="{ 'current-day': isCurrentDay(day.date) }"
+              @click="showDaySchedule(day.date)"
+            >
+              {{ day.date }}
+            </q-btn>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -163,7 +175,7 @@ export default {
   border-radius: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin: auto;
-  padding-top: 0;
+  margin-top: 50px;
   max-width: 100%;
 }
 
