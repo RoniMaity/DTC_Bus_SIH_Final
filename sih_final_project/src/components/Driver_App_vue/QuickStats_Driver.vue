@@ -1,41 +1,47 @@
 <template>
   <div class="stats-grid">
-    <div class="stat-card blue-card">
-      <div class="icon blue-icon">
-        <Route class="icon-size" />
-      </div>
-      <p class="stat-value blue-text">4</p>
-      <p class="stat-label">Today's Routes</p>
-    </div>
+    <!-- Today's Routes Stat Card -->
+    <q-card class="stat-card blue-card">
 
-    <div class="stat-card green-card">
+
+
+      <q-icon name="fa-solid fa-location-dot" color="blue" size="24px"  />
+
+      <p class="stat-value blue-text">
+
+        4
+      </p>
+      <p class="stat-label">Today's Routes</p>
+    </q-card>
+
+    <!-- Hours Driven Stat Card -->
+    <q-card class="stat-card green-card">
       <div class="icon green-icon">
-        <Clock class="icon-size" />
       </div>
       <p class="stat-value green-text">6.5</p>
       <p class="stat-label">Hours Driven</p>
-    </div>
+    </q-card>
 
-    <div class="stat-card orange-card">
+    <!-- Distance Travelled Stat Card -->
+    <q-card class="stat-card orange-card">
       <div class="icon orange-icon">
-        <Fuel class="icon-size" />
       </div>
       <p class="stat-value orange-text">8.2 km</p>
       <p class="stat-label">Distance Travelled</p>
-    </div>
+    </q-card>
 
-    <div class="stat-card purple-card">
+    <!-- Stops Today Stat Card -->
+    <q-card class="stat-card purple-card">
       <div class="icon purple-icon">
-        <MapPin class="icon-size" />
       </div>
       <p class="stat-value purple-text">28</p>
       <p class="stat-label">Stops Today</p>
-    </div>
+    </q-card>
   </div>
 </template>
 
 <script setup>
-import { Route, Clock, Fuel, MapPin } from 'lucide-vue-next';
+import { QCard } from 'quasar';
 </script>
 
 <style scoped>
@@ -93,9 +99,11 @@ import { Route, Clock, Fuel, MapPin } from 'lucide-vue-next';
   margin-bottom: 0.5rem;
 }
 
-.icon-size {
-  height: 1.5rem;
-  width: 1.5rem;
+.icon-size-large {
+  height: 2.5rem;
+  /* Increased size */
+  width: 2.5rem;
+  /* Increased size */
 }
 
 .blue-icon {
@@ -115,7 +123,8 @@ import { Route, Clock, Fuel, MapPin } from 'lucide-vue-next';
 }
 
 .stat-value {
-  font-size: 1.875rem;
+  font-size: 2.25rem;
+  /* Slightly larger value */
   font-weight: 700;
   margin-bottom: 0.25rem;
 }
