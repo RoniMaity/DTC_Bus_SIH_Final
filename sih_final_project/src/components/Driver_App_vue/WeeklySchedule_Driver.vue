@@ -1,21 +1,17 @@
 <template>
-  <div class="weekly-overview">
+  <q-card class="weekly-overview">
     <div class="bg-overlay">
-      <img alt="Background" class="bg-image" />
+      <q-img alt="Background" class="bg-image" />
     </div>
 
     <div class="content">
       <h2 class="title">
-        <Calendar class="icon" />
+        <q-icon name="calendar" class="icon" />
         Weekly Overview
       </h2>
 
       <div class="days">
-        <div
-          v-for="day in weekDays"
-          :key="day"
-          :class="['day', { active: day === currentDay }]"
-        >
+        <div v-for="day in weekDays" :key="day" :class="['day', { active: day === currentDay }]">
           <div class="day-header">
             <span :class="['day-name', { active: day === currentDay }]">{{ day }}</span>
             <span class="shift-time">
@@ -29,12 +25,11 @@
         </div>
       </div>
     </div>
-  </div>
+  </q-card>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { Calendar } from 'lucide-vue-next'
 
 const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const currentDay = ref('')
@@ -172,7 +167,7 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
-  .weekly-overview{
+  .weekly-overview {
     width: 400px;
     margin-bottom: 2rem;
   }
