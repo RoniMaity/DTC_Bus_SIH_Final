@@ -1,54 +1,77 @@
 <template>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <nav class="navbar">
-    <div class="container">
-      <div class="navbar-content">
-        <div class="logo">
-          <div class="logo-icon">
-            <Bus class="icon" />
+  <q-layout view="lHh Lpr lFf">
+    <q-header elevated class="navbar">
+      <div class="container">
+        <div class="navbar-content">
+          <div class="logo">
+            <div class="logo-icon">
+              <!-- Updated Bus Icon with a better style -->
+              <q-icon name="directions_bus" size="32px" class="bus-icon" />
+            </div>
+            <span class="logo-title">Driver Portal</span>
           </div>
-          <span class="logo-title">Driver Portal</span>
-        </div>
 
-        <div class="right-side">
+          <div class="right-side">
+            <!-- Notification button using Quasar component -->
+            <q-btn round icon="notifications" @click="toggleNotifications" flat>
+              <q-badge floating color="red" label="" v-if="hasUnreadNotifications" />
+            </q-btn>
 
-          <q-btn round icon="notifications">
-            <q-badge floating color="red" rounded />
-          </q-btn>
-
-          <span v-if="hasUnreadNotifications" class="notification-dot"></span>
-
-          <div class="profile-dropdown">
-            <div class="profile-info">
-              <p class="profile-name">XYZABC</p>
-              <p class="profile-id">Driver #4872</p>
-            </div>
-            <div class="profile-image" @click="toggleProfileMenu">
-              <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400" alt="Driver profile"
-                class="image" />
-            </div>
-            <div v-if="isProfileMenuOpen" class="profile-menu">
-              <p class="profile-name">XYZABC</p>
-              <p class="profile-id">Driver #4872</p>
-              <div>
-                <button @click="logout" class="logout-button">
-                  Log Out
-                </button>
+            <div class="profile-dropdown">
+              <div class="profile-info">
+                <p class="profile-name">XYZABC</p>
+                <p class="profile-id">Driver #4872</p>
               </div>
+
+              <!-- Profile avatar using Quasar component -->
+              <q-avatar size="40px" class="cursor-pointer" @click="toggleProfileMenu">
+                <img
+                  src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400"
+                  alt="Driver profile"
+                />
+              </q-avatar>
+
+              <!-- Profile menu using Quasar components -->
+              <q-menu v-model="isProfileMenuOpen" cover auto-close>
+                <q-list>
+                  <q-item>
+                    <q-item-section>
+                      <p class="q-mb-xs"><strong>XYZABC</strong></p>
+                      <p class="text-h6">Driver #4872</p>
+                    </q-item-section>
+                  </q-item>
+                  <q-item clickable @click="logout">
+                    <q-item-section>
+                      <q-btn flat label="Log Out" color="negative" />
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </q-header>
 
-    <div v-if="isMenuOpen" class="side-menu">
-      <ul>
-        <li><button @click="goHome">Home</button></li>
-        <li><button @click="goProfile">Profile</button></li>
-        <li><button @click="toggleNotifications">Notifications</button></li>
-      </ul>
-    </div>
-  </nav>
+    <!-- Side menu using Quasar component -->
+    <q-drawer v-model="isMenuOpen" side="left" overlay bordered>
+      <q-list>
+        <q-item clickable @click="goHome">
+          <q-item-section>Home</q-item-section>
+        </q-item>
+        <q-item clickable @click="goProfile">
+          <q-item-section>Profile</q-item-section>
+        </q-item>
+        <q-item clickable @click="toggleNotifications">
+          <q-item-section>Notifications</q-item-section>
+        </q-item>
+      </q-list>
+    </q-drawer>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
 </template>
 
 <script setup>
@@ -56,6 +79,7 @@ import { ref } from 'vue';
 
 const hasUnreadNotifications = ref(true);
 const isProfileMenuOpen = ref(false);
+const isMenuOpen = ref(false);
 
 const toggleNotifications = () => {
   hasUnreadNotifications.value = !hasUnreadNotifications.value;
@@ -84,19 +108,23 @@ const goProfile = () => {
 </script>
 
 <style scoped>
+/* Navbar background color change to dark blue */
 .navbar {
-  background-color: #1e3a8a;
+  background: linear-gradient(135deg, #1e2a4e, #0a1a3d);
   color: white;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px, rgba(0, 0, 0, 0.1) 0px 1px 3px;
   margin-bottom: 0;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* General container settings */
 .container {
   max-width: 7xl;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
+/* Navbar content alignment */
 .navbar-content {
   display: flex;
   align-items: center;
@@ -105,29 +133,49 @@ const goProfile = () => {
   flex-wrap: wrap;
 }
 
+/* Logo styling */
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-  padding-bottom: 2rem;
+  gap: 1rem;
+
 }
 
 .logo-icon {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding-right: 0.5rem;
-  padding-left: 0.7rem;
-  margin-bottom: 2rem;
-  padding-top: 0.3rem;
-  border-radius: 40%;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px;
 }
 
+.logo-icon:hover {
+  transform: scale(1.2);
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 6px 12px;
+}
+
+.bus-icon {
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.bus-icon:hover {
+  color: #ffeb3b; /* Golden yellow */
+}
+
+/* Logo title */
 .logo-title {
   font-weight: bold;
   font-size: 1.25rem;
-  padding-bottom: 2rem;
+  color: white;
+  transition: color 0.3s ease;
 }
 
+.logo-title:hover {
+  color: #ffeb3b; /* Golden yellow */
+}
+
+/* Right-side content (notifications, profile) */
 .right-side {
   display: flex;
   align-items: center;
@@ -135,22 +183,17 @@ const goProfile = () => {
   flex-wrap: wrap;
 }
 
-.notification-button {
-  padding-bottom: 7px;
-  padding-top: 9px;
-  border-radius: 1000px;
-  border: 2px bold black;
-  background: white;
-  cursor: pointer;
+.notification-btn {
   position: relative;
-  color: black;
-  width: 48px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.notification-button:hover {
+.notification-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
 }
 
+/* Notification dot */
 .notification-dot {
   position: absolute;
   top: 0;
@@ -158,18 +201,22 @@ const goProfile = () => {
   height: 0.5rem;
   width: 0.5rem;
   background-color: #f56565;
-  border-radius: 9999px;
+  border-radius: 50%;
+  margin: 0;
 }
 
+
+/* Profile dropdown */
 .profile-dropdown {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
-  padding-left: 0.5rem;
+  padding-left: 1rem;
   position: relative;
 }
 
+/* Profile info styling */
 .profile-info {
   text-align: right;
   gap: 0;
@@ -186,20 +233,18 @@ const goProfile = () => {
   color: rgba(59, 130, 246, 0.75);
 }
 
-.profile-image {
-  width: 2.5rem;
-  height: 2.5rem;
-  overflow: hidden;
-  border-radius: 9999px;
-  cursor: pointer;
+/* Profile avatar */
+.profile-avatar {
+  border-radius: 50%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.profile-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px;
 }
 
+/* Profile menu */
 .profile-menu {
   position: absolute;
   top: 100%;
@@ -212,12 +257,7 @@ const goProfile = () => {
   width: 10rem;
 }
 
-.profile-menu button {
-  width: 100%;
-  text-align: left;
-  color: #f56565;
-}
-
+/* Side menu */
 .side-menu {
   position: fixed;
   top: 0;
@@ -230,36 +270,22 @@ const goProfile = () => {
   z-index: 10;
 }
 
-.side-menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.side-menu q-item {
+  padding: 0.8rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.side-menu li {
-  margin: 1rem 0;
-}
-
-.side-menu button {
-  width: 100%;
-  padding: 1rem;
-  text-align: left;
-  background-color: transparent;
-  color: white;
-  font-size: 1rem;
-  border: none;
-  cursor: pointer;
-}
-
-.side-menu button:hover {
+.side-menu q-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
 }
 
+/* Mobile responsiveness */
 @media (max-width: 768px) {
-
   .logo {
     margin: 0;
-    padding-top: 17px;
+    padding-top: 8px;
   }
 
   .container {
