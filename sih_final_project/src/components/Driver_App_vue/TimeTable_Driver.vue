@@ -1,30 +1,31 @@
 <template>
-  <div class="route-card-container">
+  <q-card class="route-card-container">
     <div class="header">
       <h2 class="title">
-        <Clock class="title-icon" />
+        <q-icon name="schedule" class="title-icon" />
         Route Schedule
       </h2>
       <div class="tabs">
-        <button
+        <q-btn
           v-for="tab in ['today', 'tomorrow']"
           :key="tab"
           @click="activeTab = tab"
           :class="['tab-button', activeTab === tab ? 'active-tab' : 'inactive-tab']"
+          flat
         >
           {{ tab.charAt(0).toUpperCase() + tab.slice(1) }}
-        </button>
+        </q-btn>
       </div>
     </div>
 
     <div class="route-list">
-      <div
+      <q-card
         v-for="(route, index) in filteredRoutes"
         :key="index"
         class="route-card"
       >
         <div class="route-card-background">
-          <img
+          <q-img
             :src="getBusImage(index)"
             alt="Bus Image"
             class="background-image"
@@ -33,26 +34,28 @@
         <div class="route-details">
           <div class="route-header">
             <span class="route-time">{{ route.time }}</span>
-            <span :class="[
-              'status-label',
-              {
-                'completed': route.status === 'Completed',
-                'in-progress': route.status === 'In Progress',
-                'upcoming': route.status === 'Upcoming'
-              }
-            ]">
+            <span
+              :class="[
+                'status-label',
+                {
+                  completed: route.status === 'Completed',
+                  inProgress: route.status === 'In Progress',
+                  upcoming: route.status === 'Upcoming',
+                },
+              ]"
+            >
               {{ route.status }}
             </span>
           </div>
           <div class="route-location">
-            <div class="location">
-              <MapPin class="location-icon" />
-              {{ route.from }}
+            <div class="location from-to">
+              <q-icon name="location_on" class="location-icon" />
+              <span>{{ route.from }}</span>
             </div>
-            <ArrowRight class="arrow-icon" />
-            <div class="location">
-              <MapPin class="location-icon" />
-              {{ route.to }}
+            <q-icon name="arrow_forward" class="arrow-icon" />
+            <div class="location from-to">
+              <q-icon name="location_on" class="location-icon" />
+              <span>{{ route.to }}</span>
             </div>
           </div>
           <div class="route-info">
@@ -61,15 +64,22 @@
           </div>
         </div>
 
-        <button class="join-button" @click="joinRoute(route)">Join</button>
-      </div>
+        <q-btn
+          class="join-button"
+          @click="joinRoute(route)"
+          label="Join"
+          color="white"
+          rounded
+          flat
+        />
+      </q-card>
     </div>
-  </div>
+  </q-card>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
-import { Clock, MapPin, ArrowRight } from 'lucide-vue-next';
+import { QIcon, QBtn, QCard, QImg } from 'quasar';
 
 const activeTab = ref('today');
 
@@ -84,7 +94,7 @@ const busImages = [
   'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800',
   'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800',
   'https://img.freepik.com/premium-photo/night-bus-free-photo-hd-8k-wallpaper_915071-92097.jpg',
-  'https://images.unsplash.com/photo-1494515843206-f3117d3f51b7?w=800'
+  'https://images.unsplash.com/photo-1494515843206-f3117d3f51b7?w=800',
 ];
 
 const getBusImage = (index) => busImages[index % busImages.length];
@@ -101,15 +111,18 @@ const joinRoute = (route) => {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 .route-card-container {
   background-color: white;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 55%;
+  border-radius: 1.25rem;
+  padding: 1.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 60%;
   margin-left: 3rem;
   margin-bottom: 2rem;
   color: #1f2937;
+  font-family: 'Poppins', sans-serif;
 }
 
 .header {
@@ -120,15 +133,14 @@ const joinRoute = (route) => {
 
 .title {
   padding-top: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   color: #1f2937;
 }
 
 .title-icon {
-  margin-right: 0.5rem;
   height: 1.5rem;
   width: 1.5rem;
   color: #2563eb;
@@ -136,15 +148,16 @@ const joinRoute = (route) => {
 
 .tabs {
   display: flex;
-  gap: 0.5rem;
-  height: 50px;
+  border-radius: 0.75rem;
+  gap: 0.75rem;
+  height: 55px;
 }
 
 .tab-button {
   padding: 0.5rem 1rem;
   border-radius: 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 400;
   transition: background-color 0.3s, color 0.3s;
   color: #1f2937;
 }
@@ -165,21 +178,22 @@ const joinRoute = (route) => {
 }
 
 .route-list {
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .route-card {
   position: relative;
-  border-radius: 0.75rem;
-  padding: 1rem;
+  border-radius: 1.5rem;
+  padding: 1.25rem;
   background-color: white;
   border: 1px solid #e5e7eb;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   cursor: pointer;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
 }
 
 .route-card-background {
@@ -204,18 +218,20 @@ const joinRoute = (route) => {
 .route-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .route-time {
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .status-label {
-  padding: 0.25rem 0.75rem;
+  padding: 0.3rem 1rem;
   border-radius: 9999px;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .completed {
@@ -223,8 +239,8 @@ const joinRoute = (route) => {
   color: #10b981;
 }
 
-.in-progress {
-  background-color: #fef3c7;
+.inProgress {
+  background-color: #fffbeb;
   color: #eab308;
 }
 
@@ -236,42 +252,49 @@ const joinRoute = (route) => {
 .route-location {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: 1rem;
+  margin-top: 0.75rem;
 }
 
 .location {
   display: flex;
   align-items: center;
+  font-size: 1rem;
+}
+
+.from-to {
+  font-size: 1.125rem;
+  font-weight: 300;
+  color: #1f2937;
 }
 
 .location-icon {
-  height: 1rem;
-  width: 1rem;
+  height: 1.25rem;
+  width: 1.25rem;
   margin-right: 0.25rem;
   color: #000000;
 }
 
 .arrow-icon {
-  height: 1rem;
-  width: 1rem;
+  height: 1.25rem;
+  width: 1.25rem;
   color: #6b7280;
 }
 
 .route-info {
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
+  font-size: 1rem;
+  margin-top: 0.75rem;
 }
 
 .join-button {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: 20px;
+  right: 20px;
   background-color: #2563eb;
   color: white;
   font-size: 0.875rem;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
+  font-weight: 400;
+  padding: 0.75rem 1.25rem;
   border-radius: 9999px;
   border: none;
   cursor: pointer;
@@ -287,7 +310,7 @@ const joinRoute = (route) => {
   .route-card-container {
     width: 90%;
     margin-left: 1rem;
-    padding: 1rem;
+    padding: 1.25rem;
   }
 
   .header {
@@ -296,25 +319,22 @@ const joinRoute = (route) => {
   }
 
   .title {
-    font-size: 1.125rem;
+    font-size: 0.8rem;
   }
 
   .tabs {
-    margin-top: 1rem;
     justify-content: center;
+    margin-top: 1rem;
   }
 
   .tab-button {
-    font-size: 0.75rem;
-    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
   }
 
   .route-card {
     flex-direction: column;
-  }
-
-  .route-info {
-    font-size: 0.75rem;
+    padding: 1.5rem;
   }
 
   .join-button {
