@@ -1,7 +1,7 @@
 <template>
-  <div class="weather-widget">
+  <q-card class="weather-widget">
     <div class="bg-image-overlay">
-      <img
+      <q-img
         :src="bgImageUrl"
         alt="weather background"
         class="bg-image"
@@ -11,7 +11,7 @@
       <div class="weather-info">
         <h1 class="weather-title">Weather Conditions</h1>
         <div class="flex items-center space-x-3">
-          <component :is="currentIcon" class="icon-sun" />
+          <q-icon :name="currentIcon" class="icon-sun" />
           <div>
             <span class="temperature">{{ temperature }}°C</span>
             <p class="city-name">{{ cityName }}</p>
@@ -21,19 +21,19 @@
       <div class="weather-details">
         <div v-for="(detail, index) in weatherDetails" :key="index" class="weather-detail">
           <div class="flex items-center space-x-2">
-            <component :is="detail.icon" class="icon" />
+            <q-icon :name="detail.icon" class="icon" />
             <span>{{ detail.label }}: {{ detail.value }}</span>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </q-card>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-import { Cloud, Sun, Wind, Droplets, CloudRain, CloudSnow } from 'lucide-vue-next'
+// import { Cloud, Sun, Wind, Droplets, CloudRain, CloudSnow } from 'lucide-vue-next'
 
 const temperature = ref(0)
 const cityName = ref('')
@@ -41,12 +41,12 @@ const windSpeed = ref(0)
 const humidity = ref(0)
 const weatherDescription = ref('')
 const bgImageUrl = ref('')
-const currentIcon = ref(Sun)
+const currentIcon = ref('sun')
 
 const weatherDetails = ref([
-  { label: 'Wind', value: `${windSpeed.value} km/h`, icon: Wind },
-  { label: 'Humidity', value: `${humidity.value}%`, icon: Droplets },
-  { label: 'Description', value: weatherDescription.value, icon: Cloud }
+  { label: 'Wind', value: `${windSpeed.value} km/h`, icon: 'wind' },
+  { label: 'Humidity', value: `${humidity.value}%`, icon: 'droplets' },
+  { label: 'Description', value: weatherDescription.value, icon: 'cloud' }
 ])
 
 const fetchWeatherData = async (lat, lon) => {
@@ -72,9 +72,9 @@ const fetchWeatherData = async (lat, lon) => {
     updateIcon(data.weather[0].main)
 
     weatherDetails.value = [
-      { label: 'Wind', value: `${windSpeed.value} km/h`, icon: Wind },
-      { label: 'Humidity', value: `${humidity.value}%`, icon: Droplets },
-      { label: 'Description', value: weatherDescription.value, icon: Cloud }
+      { label: 'Wind', value: `${windSpeed.value} km/h`, icon: 'wind' },
+      { label: 'Humidity', value: `${humidity.value}%`, icon: 'droplets' },
+      { label: 'Description', value: weatherDescription.value, icon: 'cloud' }
     ]
   } catch (error) {
     console.error('Error fetching weather data:', error)
@@ -97,15 +97,15 @@ const updateBackground = (weatherCondition) => {
 
 const updateIcon = (weatherCondition) => {
   if (weatherCondition.includes('Clear')) {
-    currentIcon.value = Sun
+    currentIcon.value = 'sun'
   } else if (weatherCondition.includes('Cloud')) {
-    currentIcon.value = Cloud
+    currentIcon.value = 'cloud'
   } else if (weatherCondition.includes('Rain')) {
-    currentIcon.value = CloudRain
+    currentIcon.value = 'cloud-rain'
   } else if (weatherCondition.includes('Snow')) {
-    currentIcon.value = CloudSnow
+    currentIcon.value = 'cloud-snow'
   } else {
-    currentIcon.value = Sun
+    currentIcon.value = 'sun'
   }
 }
 
@@ -137,7 +137,7 @@ onMounted(() => {
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   width: 55%;
-  height: auto;
+  height: 270px;
   margin-bottom: 2rem;
   margin-left: 3rem;
 }
@@ -237,7 +237,6 @@ onMounted(() => {
   }
 
   .weather-details {
-    margin-top: 1rem;
     max-width: 100%;
     flex-direction: column;
     gap: 8px;
@@ -246,6 +245,7 @@ onMounted(() => {
   .weather-title {
     font-size: 1.5rem;
     padding-right: 2rem;
+    margin: 0;
   }
 
   .temperature {
